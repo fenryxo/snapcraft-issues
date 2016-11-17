@@ -1,0 +1,39 @@
+name: fenryxo-dbus-app
+version: '0.1.0'
+summary: Long summary
+description: |
+    This is my-snap's description. You have a paragraph or two to tell the
+    most important story about your snap. Keep it under 100 words though,
+    we live in tweetspace and your description wants to look good in the snap
+    store.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+apps:
+    run:
+        command: desktop-launch dbus-app
+        plugs:
+            - x11
+            - unity7
+    env:
+        command: env
+    sh:
+        command: bash
+parts:
+    dbus-app:
+        after: [ desktop-gtk3 ]
+        plugin: autotools
+        source: ./src
+        source-type: directory
+        build-packages: 
+            - libglib2.0-dev
+            - libgtk-3-dev
+        stage-packages:
+            - libcairo2
+            - libgdk-pixbuf2.0-0
+            - libglib2.0-0
+            - libgtk-3-0
+            - libpango-1.0-0
+            - adwaita-icon-theme
+            - gnome-icon-theme-symbolic

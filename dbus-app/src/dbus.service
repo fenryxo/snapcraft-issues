@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=cz.fenryxo.DbusApp
+Exec=@PREFIX@/bin/dbus-app

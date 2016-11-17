@@ -4,3 +4,5 @@ parts
 prime
 stage
 webkit-app/src/webkit-app
+dbus-app/src/cz.fenryxo.DbusApp.service
+dbus-app/src/dbus-app

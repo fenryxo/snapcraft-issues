@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+# A basic build-API compatible configure script
+
+import sys
+
+prefix = "/usr/local"
+cflags = ""
+cxxflags = ""
+
+for arg in sys.argv[1:]:
+	try:
+		name, value = arg.split("=", 1)
+	except ValueError:
+		name, value = arg, None
+	if name == "--libdir":
+		waf.append(arg)
+	elif name == "--prefix":
+		prefix = value
+	elif name == "CFLAGS":
+		cflags = value
+	elif name == "CXXFLAGS":
+		cxxflags = value
+	else:
+		print("Warning: Unknown argument: ", arg)
+
+makefile = """
+DESTDIR ?= /
+PREFIX ?= %s
+CFLAGS ?= %s
+CXXFLAGS ?= %s
+
+all:
+	CFLAGS=$(CFLAGS) valac -vv --pkg=gtk+-3.0 \
+	-o dbus-app dbus-app.vala
+	sed dbus.service -e "s#@PREFIX@#$(PREFIX)#g" > cz.fenryxo.DbusApp.service
+install:
+	install -Dsv dbus-app "$(DESTDIR)/$(PREFIX)/bin/dbus-app"
+	install -Dvm 644 cz.fenryxo.DbusApp.service "$(DESTDIR)/$(PREFIX)/share/dbus-1/services/cz.fenryxo.DbusApp.service"
+
+uinstall:
+	rm -fv "$(DESTDIR)/$(PREFIX)/bin/dbus-app"
+	rm -fv "$(DESTDIR)/$(PREFIX)/share/dbus-1/services/cz.fenryxo.DbusApp.service"
+
+clean:
+	rm -fv dbus-app cz.fenryxo.DbusApp.service
+distclean : clean
+	rm -fv Makefile
+
+
+.NOTPARALLEL:
+""" % (prefix, cflags, cxxflags)
+
+with open("Makefile", "wt") as f:
+	f.write(makefile)
