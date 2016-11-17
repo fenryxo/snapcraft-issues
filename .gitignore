@@ -1,0 +1,6 @@
+*.snap
+Makefile
+parts
+prime
+stage
+webkit-app/src/webkit-app

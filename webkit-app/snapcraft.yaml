@@ -1,0 +1,51 @@
+name: fenryxo-webkit-app
+version: '0.1.0'
+summary: Long summary
+description: |
+    This is my-snap's description. You have a paragraph or two to tell the
+    most important story about your snap. Keep it under 100 words though,
+    we live in tweetspace and your description wants to look good in the snap
+    store.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+apps:
+    run:
+        command: desktop-launch webkit-app
+        plugs:
+            - x11
+            - unity7
+            - network
+            - opengl
+            - pulseaudio
+            - browser-support
+            - location-observe
+            - network-observe
+    env:
+        command: env
+    sh:
+        command: bash
+parts:
+    webkit-app:
+        after: [ desktop-gtk3 ]
+        plugin: autotools
+        source: ./src
+        source-type: directory
+        build-packages: 
+            - libglib2.0-dev
+            - libgtk-3-dev
+            - libwebkit2gtk-4.0-dev
+            - valac
+        stage-packages:
+            - libcairo2
+            - libgdk-pixbuf2.0-0
+            - libglib2.0-0
+            - libgstreamer1.0-0
+            - libgtk-3-0
+            - libjavascriptcoregtk-4.0-18
+            - libpango-1.0-0
+            - libsoup2.4-1
+            - adwaita-icon-theme
+            - gnome-icon-theme-symbolic
+            - libwebkit2gtk-4.0-37
